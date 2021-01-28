@@ -114,7 +114,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of items">
+              <tr *ngFor="let item of items; let i = index">
                 <th>
                   {{item.product}}
                 </th>
@@ -131,7 +131,7 @@
                   {{item.date}}
                 </td>
                 <td class="text-right">
-                  <button class="btn btn-lg btn-primary">Editar</button>
+                  <button class="btn btn-lg btn-primary" (click)="editInventory(mdl_add, i)">Editar</button>
                 </td>
               </tr>
             </tbody>
@@ -174,25 +174,28 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body bg-secondary">
+  <form [formGroup]="formInventory" class="modal-body bg-secondary">
     <h6 class="h3 text-center">Entrada al inventario</h6>
     <div class="pl-lg-4">
       <div class="row">
         <div class="col-lg-6">
           <div class="form-group">
             <label class="form-control-label" for="input-username">Producto</label>
-            <select class="form-control form-control-alternative">
+            <select class="form-control form-control-alternative" formControlName="product">
               <option value="">Seleccionar una opción</option>
-              <option value="">Silla</option>
-              <option value="">Mesa</option>
-              <option value="">Sillón</option>
+              <option value="Silla">Silla</option>
+              <option value="Mesa">Mesa</option>
+              <option value="Sillón">Sillón</option>
+              <option value="Sillón">Ropero</option>
             </select>
+            <span class="red" *ngIf="formInventory.get('product').touched && formInventory.get('product').hasError('required')">Requerido</span>
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label class="form-control-label" for="input-quantity">Cantidad</label>
-            <input type="number" id="input-quantity" class="form-control form-control-alternative" placeholder="0">
+            <input type="number" id="input-quantity" class="form-control form-control-alternative" placeholder="0" formControlName="quantity">
+            <span class="red" *ngIf="formInventory.get('quantity').touched && formInventory.get('quantity').hasError('required')">Requerido</span>
           </div>
         </div>
       </div>
@@ -200,13 +203,15 @@
         <div class="col-lg-6">
           <div class="form-group">
             <label class="form-control-label" for="input-price-item">Precio por unidad</label>
-            <input type="number" id="input-price-item" class="form-control form-control-alternative" placeholder="0" >
+            <input type="number" id="input-price-item" class="form-control form-control-alternative" placeholder="0" formControlName="price">
+            <span class="red" *ngIf="formInventory.get('price').touched && formInventory.get('price').hasError('required')">Requerido</span>
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label class="form-control-label" for="input-last-name">Total</label>
-            <input type="number" id="input-last-name" class="form-control form-control-alternative" placeholder="0">
+            <input type="number" id="input-last-name" class="form-control form-control-alternative" placeholder="0" formControlName="total">
+            <span class="red" *ngIf="formInventory.get('total').touched && formInventory.get('total').hasError('required')">Requerido</span>
           </div>
         </div>
       </div>
@@ -216,14 +221,15 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
             </div>
-            <input class="form-control datepicker" placeholder="Fecha de entrada" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" type="text"/>
+            <input class="form-control datepicker" placeholder="Fecha de entrada" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" type="text" formControlName="date"/>
           </div>
+          <span class="red" *ngIf="formInventory.get('date').touched && formInventory.get('date').hasError('required')">Requerido</span>
         </div>
       </div>
     </div>
-  </div>
+  </form>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-success" (click)="activeModal.close('Close click')">Guardar</button>
+    <button type="submit" class="btn btn-primary" [disabled]="formInventory.invalid" (click)="saveInventoryData()">Guardar</button>
   </div>
 </ng-template>
 
