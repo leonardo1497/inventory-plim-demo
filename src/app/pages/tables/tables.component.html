@@ -186,7 +186,7 @@
               <option value="Silla">Silla</option>
               <option value="Mesa">Mesa</option>
               <option value="Sillón">Sillón</option>
-              <option value="Sillón">Ropero</option>
+              <option value="Ropero">Ropero</option>
             </select>
             <span class="red" *ngIf="formInventory.get('product').touched && formInventory.get('product').hasError('required')">Requerido</span>
           </div>
@@ -229,7 +229,8 @@
     </div>
   </form>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary" [disabled]="formInventory.invalid" (click)="saveInventoryData()">Guardar</button>
+    <button *ngIf="!update" type="submit" class="btn btn-primary" [disabled]="formInventory.invalid" (click)="saveInventoryData()">Guardar</button>
+    <button *ngIf="update" type="submit" class="btn btn-primary" [disabled]="formInventory.invalid" (click)="updateInventoryData()">Actualizar</button>
   </div>
 </ng-template>
 

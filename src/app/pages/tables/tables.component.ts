@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDate,NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-tables',
@@ -12,6 +12,9 @@ export class TablesComponent implements OnInit {
   formInventory: FormGroup;
   activeModal: NgbActiveModal;
   dateEdit: NgbDate;
+  model: NgbDateStruct;
+  positionItem;
+  update = false;
   items: any = [
     {product: "Mesa", quantity: 10, price: 320, total: 3200, date: "01/05/2021" },
     {product: "Sillón", quantity: 10, price: 320, total: 3200, date: "03/12/2021" },
@@ -34,10 +37,13 @@ export class TablesComponent implements OnInit {
   }
 
   open(modal) {
+    this.update = false
     this.activeModal = this.modalService.open(modal, { size: 'xl' });
   }
 
   editInventory(modal, position){
+    this.update = true
+    this.positionItem = position
     let inventoryProduct = this.items[position]
     let dateArray = inventoryProduct.date.split("/")
     let date = new  NgbDate(Number(dateArray[2]),Number(dateArray[1]), Number(dateArray[0]))
@@ -46,14 +52,20 @@ export class TablesComponent implements OnInit {
     this.formInventory.get('total').setValue(inventoryProduct.total)
     this.formInventory.get('price').setValue(inventoryProduct.price)
     this.formInventory.get('date').setValue(date)
+    this.model = date
     this.activeModal = this.modalService.open(modal, { size: 'xl' });
   }
   
 
   saveInventoryData(){
+    this.changeFormatDate()
+    this.items.push(this.formInventory.value)
+    this.modalService.dismissAll()
+  }
+
+  changeFormatDate(){
     let month = this.formInventory.value.date.month
     let day = this.formInventory.value.date.day
-    console.log(this.formInventory.value.date)
     if(month < 10){
       month = "0"+month
     }
@@ -61,11 +73,12 @@ export class TablesComponent implements OnInit {
     if(day < 10){
       day = "0"+day
     }
-
     this.formInventory.value.date = day+"/"+month+"/"+this.formInventory.value.date.year
+  }
 
-     
-    this.items.push(this.formInventory.value)
+  updateInventoryData(){
+    this.changeFormatDate()
+    this.items.splice(this.positionItem,1 ,this.formInventory.value)
     this.modalService.dismissAll()
   }
 
