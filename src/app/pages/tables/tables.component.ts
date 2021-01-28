@@ -38,6 +38,9 @@ export class TablesComponent implements OnInit {
 
   open(modal) {
     this.update = false
+    this.formInventory.reset()
+    this.formInventory.get('product').setValue("")
+    this.model = null
     this.activeModal = this.modalService.open(modal, { size: 'xl' });
   }
 
