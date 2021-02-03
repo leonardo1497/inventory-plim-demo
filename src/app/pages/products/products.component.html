@@ -1,0 +1,124 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <!-- eliminamos lo que estaba aqui -->
+        </div>
+    </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <button class="btn btn-lg btn-outline-primary" (click)="open(mdl_add)">Agregar</button><br><br>
+                    <h3 class="mb-0">Lista de productos</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Salidas</th>
+                                <th scope="col">disponnibles</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of items; let i = index">
+                                <th>
+                                    {{item.name}}
+                                </th>
+                                <th>
+                                    {{item.total}}
+                                </th>
+                                <th>
+                                    {{item.inventoryOutputs}}
+                                </th>
+                                <th>
+                                    {{item.total - item.inventoryOutputs}}
+                                </th>
+                                <td>
+                                    {{item.description}}
+                                </td>
+                                <td class="text-right">
+                                    <button class="btn btn-lg btn-primary"
+                                        (click)="editProduct(mdl_add, i)">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer py-4">
+                    <nav aria-label="...">
+                        <ul class="pagination justify-content-end mb-0">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="javascript:void(0)" tabindex="-1">
+                                    <i class="fas fa-angle-left"></i>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="javascript:void(0)">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)">2 <span
+                                        class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)">
+                                    <i class="fas fa-angle-right"></i>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #mdl_add>
+    <div class="modal-header">
+        <h4 class="modal-title">{{tittleModal}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form [formGroup]="formProduct" class="modal-body bg-secondary">
+        <h6 class="h3 text-center">{{tittleModal}}</h6>
+        <div class="pl-lg-4">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="form-control-label" for="input-name">Nombre</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" placeholder="Escritorio"
+                            formControlName="name">
+                        <span class="red"
+                            *ngIf="formProduct.get('name').touched && formProduct.get('name').hasError('required')">Requerido</span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="form-control-label" for="input-description">Descripcion</label>
+                        <input type="text" id="input-description" class="form-control form-control-alternative"
+                            placeholder="Escritorio de madera de cedro de 1m de largo por 5o cm de ancho" formControlName="description">
+                        <span class="red"
+                            *ngIf="formProduct.get('description').touched && formProduct.get('description').hasError('required')">Requerido</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <button *ngIf="!update" type="submit" class="btn btn-primary" [disabled]="formProduct.invalid"
+            (click)="saveProductData()">Guardar</button>
+        <button *ngIf="update" type="submit" class="btn btn-primary" [disabled]="formProduct.invalid"
+            (click)="updateProductData()">Actualizar</button>
+    </div>
+</ng-template>
