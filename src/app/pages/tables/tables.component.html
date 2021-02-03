@@ -110,6 +110,8 @@
                 <th scope="col">Precio por unidad</th>
                 <th scope="col">Total</th>
                 <th scope="col">Fecha</th>
+                <th scope="col">Salida</th>
+                <th scope="col"></th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -129,6 +131,12 @@
                 </td>
                 <td>
                   {{item.date}}
+                </td>
+                <td>
+                  {{item.inventoryOutputs}}
+                </td>
+                <td class="text-right">
+                  <button *ngIf="(item.quantity - item.inventoryOutputs) > 0" class="btn btn-lg btn-primary" (click)="editOutput(mdl_output, i)">Salida</button>
                 </td>
                 <td class="text-right">
                   <button class="btn btn-lg btn-primary" (click)="editInventory(mdl_add, i)">Editar</button>
@@ -183,10 +191,7 @@
             <label class="form-control-label" for="input-username">Producto</label>
             <select class="form-control form-control-alternative" formControlName="product">
               <option value="">Seleccionar una opción</option>
-              <option value="Silla">Silla</option>
-              <option value="Mesa">Mesa</option>
-              <option value="Sillón">Sillón</option>
-              <option value="Ropero">Ropero</option>
+              <option *ngFor="let product of products" value="{{product.name}}">{{product.name}}</option>
             </select>
             <span class="red" *ngIf="formInventory.get('product').touched && formInventory.get('product').hasError('required')">Requerido</span>
           </div>
@@ -234,3 +239,33 @@
   </div>
 </ng-template>
 
+<ng-template #mdl_output>
+  <div class="modal-header">
+    <h4 class="modal-title">Salida</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="formOutput" class="modal-body bg-secondary">
+    <h6 class="h3 text-center">Salida del inventario</h6>
+    <div class="pl-lg-4">
+      <div class="row">
+        <div class="col">
+          <label  class="form-control-label font-weight-bold">Stock actual: {{stockProduct}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label class="form-control-label" >Cantidad de salida de productos</label>
+            <input type="number"  class="form-control form-control-alternative" placeholder="0" formControlName="output" >
+            <span class="red" *ngIf="formOutput.get('output').touched && formOutput.get('output').hasError('required')">Requerido</span>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="formOutput.invalid" (click)="updateOutput()">Actualizar</button>
+    </div>
+  </form>
+</ng-template>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

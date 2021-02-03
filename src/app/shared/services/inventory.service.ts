@@ -6,7 +6,7 @@ import { Observable, throwError, BehaviorSubject, Subject } from "rxjs";
 })
 export class InventoryService {
   itemsInventory: any = [
-    {product: "Mesa", quantity: 10, price: 320, total: 3200,inventoryOutputs:10,pdate: "01/05/2021" },
+    {product: "Mesa", quantity: 10, price: 320, total: 3200,inventoryOutputs:10,date: "01/05/2021" },
     {product: "Sillón", quantity: 10, price: 320, total: 3200, inventoryOutputs:0,date: "03/12/2021" },
     {product: "Silla", quantity: 10, price: 320, total: 3200,inventoryOutputs:0, date: "22/03/2020" },
     {product: "Ropero", quantity: 10, price: 320, total: 3200,inventoryOutputs:0, date: "11/02/2021" },

@@ -10,6 +10,7 @@ import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsComponent } from 'src/app/pages/products/products.component';
+import { ToastsComponent } from 'src/app/shared/toasts/toasts.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ProductsComponent } from 'src/app/pages/products/products.component';
   declarations: [
     DashboardComponent,
     TablesComponent,
-    ProductsComponent
+    ProductsComponent,
+    ToastsComponent
   ]
 })
 

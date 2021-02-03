@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {NgbDate,NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { InventoryService } from 'src/app/shared/services/inventory.service';
+import { ToastService } from 'src/app/shared/toasts/toast-service';
 
 @Component({
   selector: 'app-tables',
@@ -10,29 +12,34 @@ import {NgbDate,NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 })
 export class TablesComponent implements OnInit {
   formInventory: FormGroup;
+  formOutput: FormGroup
   activeModal: NgbActiveModal;
   dateEdit: NgbDate;
   model: NgbDateStruct;
   positionItem;
   update = false;
-  items: any = [
-    {product: "Mesa", quantity: 10, price: 320, total: 3200, date: "01/05/2021" },
-    {product: "Sillón", quantity: 10, price: 320, total: 3200, date: "03/12/2021" },
-    {product: "Silla", quantity: 10, price: 320, total: 3200, date: "22/03/2020" },
-    {product: "Ropero", quantity: 10, price: 320, total: 3200, date: "11/02/2021" },
-    {product: "Mesa", quantity: 10, price: 320, total: 3200, date: "23/01/2020" },
-  ];
+  items: any = [];
+  products: any = [];
+  stockProduct=0;
   constructor(private modalService: NgbModal,
-    private formBuilder: FormBuilder) { 
+    private formBuilder: FormBuilder,
+    private inventoryService: InventoryService,
+    private toastService: ToastService) { 
     }
 
   ngOnInit() {
+    this.inventoryService.customInventoryProducts$.subscribe(inventory =>{this.items = inventory})
+    this.inventoryService.customProducts$.subscribe(product =>{this.products = product})
     this.formInventory = this.formBuilder.group({
       product: ['', Validators.required],
       quantity: ['', Validators.required],
       price: ['', Validators.required],
       total: ['', Validators.required],
       date: ['', Validators.required],
+      inventoryOutputs: [0]
+    })
+    this.formOutput = this.formBuilder.group({
+      output:[0,Validators.required]
     })
   }
 
@@ -55,14 +62,45 @@ export class TablesComponent implements OnInit {
     this.formInventory.get('total').setValue(inventoryProduct.total)
     this.formInventory.get('price').setValue(inventoryProduct.price)
     this.formInventory.get('date').setValue(date)
+    this.formInventory.get('inventoryOutputs').setValue(inventoryProduct.inventoryOutputs)
     this.model = date
     this.activeModal = this.modalService.open(modal, { size: 'xl' });
+  }
+
+  editOutput(modal, position){
+    this.formOutput.reset()
+    let inventoryProduct = this.items[position]
+    this.stockProduct = inventoryProduct.quantity - inventoryProduct.inventoryOutputs
+    this.positionItem = position
+    this.formInventory.get('product').setValue(inventoryProduct.product)
+    this.formInventory.get('quantity').setValue(inventoryProduct.quantity)
+    this.formInventory.get('total').setValue(inventoryProduct.total)
+    this.formInventory.get('price').setValue(inventoryProduct.price)
+    this.formInventory.get('date').setValue(inventoryProduct.date)
+    this.formInventory.get('inventoryOutputs').setValue(inventoryProduct.inventoryOutputs)
+    this.activeModal = this.modalService.open(modal);
+  }
+
+  updateOutput(){
+    var output = this.formOutput.get('output').value
+
+    if(output  < 1 || output > this.stockProduct){
+      this.showDanger("La cantidad deseada está fuera de los rangos del producto")
+    }else{
+      this.formInventory.get('inventoryOutputs').setValue(this.formInventory.get('inventoryOutputs').value + output)
+      this.items.splice(this.positionItem,1 ,this.formInventory.value)
+      this.inventoryService.updateInventoryProducts(this.items)
+      this.showSuccess("Salida de producto exitosa");
+      this.modalService.dismissAll()
+    }
   }
   
 
   saveInventoryData(){
     this.changeFormatDate()
     this.items.push(this.formInventory.value)
+    this.inventoryService.updateInventoryProducts(this.items)
+    this.showSuccess("Guardado exitoso");
     this.modalService.dismissAll()
   }
 
@@ -82,7 +120,18 @@ export class TablesComponent implements OnInit {
   updateInventoryData(){
     this.changeFormatDate()
     this.items.splice(this.positionItem,1 ,this.formInventory.value)
+    this.inventoryService.updateInventoryProducts(this.items)
+    this.showSuccess("Actualización exitosa");
     this.modalService.dismissAll()
+  }
+
+  showSuccess(message) {
+    console.log(message)
+    this.toastService.show(message, { classname: 'alert-success text-white font-xl', delay: 5000, icon:'fas fa-check-circle' });
+  }
+
+  showDanger(message) {
+    this.toastService.show(message, { classname: 'alert-danger text-white font-xl', delay: 7000 ,icon: 'fas fa-exclamation-circle'});
   }
 
 }
