@@ -51,6 +51,8 @@
                                 <td class="text-right">
                                     <button class="btn btn-lg btn-primary"
                                         (click)="editProduct(mdl_add, i)">Editar</button>
+                                    <button class="btn btn-lg btn-primary"
+                                        (click)="detailsInventory(product_details, i)">Inventario</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -89,7 +91,7 @@
 
 <ng-template #mdl_add>
     <div class="modal-header">
-        <h4 class="modal-title">{{tittleModal}}</h4>
+        <h4 class="modal-title">{{update ? "Actualizar" : "Crear"}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -124,5 +126,63 @@
             (click)="saveProductData()">Guardar</button>
         <button *ngIf="update" type="submit" class="btn btn-primary" [disabled]="formProduct.invalid"
             (click)="updateProductData()">Actualizar</button>
+    </div>
+</ng-template>
+
+
+<ng-template #product_details>
+    <div class="modal-header">
+        <h4 class="modal-title">Inventario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form [formGroup]="formProduct" class="modal-body bg-secondary">
+        <h6 class="h3 text-center">Inventario del producto</h6>
+        <div class="pl-lg-4">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Precio por unidad</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Salida</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of inventoryProduct; let i = index">
+                                    <th>
+                                      {{item.product}}
+                                    </th>
+                                    <td>
+                                      {{item.quantity}}
+                                    </td>
+                                    <td>
+                                      ${{item.price}}
+                                    </td>
+                                    <td>
+                                      ${{item.total}}
+                                    </td>
+                                    <td>
+                                      {{item.date}}
+                                    </td>
+                                    <td>
+                                      {{item.inventoryOutputs}}
+                                    </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <button  class="btn btn-primary" (click)="close()">Cerrar</button>
     </div>
 </ng-template>
