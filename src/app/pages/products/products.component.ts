@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.inventoryService.customProducts$.subscribe(products =>{this.items = products;});
     this.inventoryService.customInventoryProducts$.subscribe(inventoryProducts =>{this.inventoryProducts = inventoryProducts;})
-    
+
     //Aca actualizo el total de  productos y la cantidad de productos que salio del inventario
     this.updateProductsBasedOnInventory();
     this.inventoryService.updateProducts(this.items);
@@ -72,13 +72,15 @@ export class ProductsComponent implements OnInit {
 
   updateProductsBasedOnInventory(){
     this.items.forEach(element => {
-      let total=0, inventoryOutputs = 0;
+      let quantity=0, total=0, inventoryOutputs = 0;
         this.inventoryProducts.forEach(element1 => {
           if(element1.product==element.name){
+            quantity += element1.quantity;
             total += element1.total;
             inventoryOutputs += element1.inventoryOutputs;
           }
         });
+      element.quantity = quantity;
       element.total = total;
       element.inventoryOutputs = inventoryOutputs;
     });

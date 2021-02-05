@@ -20,9 +20,10 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Nombre</th>
-                                <th scope="col">Total</th>
+                                <th scope="col">Cantidad total</th>
                                 <th scope="col">Salidas</th>
-                                <th scope="col">disponnibles</th>
+                                <th scope="col">Disponnibles</th>
+                                <th scope="col">Precio total</th>
                                 <th scope="col">Descripcion</th>
                                 <th scope="col"></th>
                             </tr>
@@ -33,13 +34,16 @@
                                     {{item.name}}
                                 </th>
                                 <th>
-                                    {{item.total}}
+                                    {{item.quantity}}
                                 </th>
                                 <th>
                                     {{item.inventoryOutputs}}
                                 </th>
                                 <th>
-                                    {{item.total - item.inventoryOutputs}}
+                                    {{item.quantity - item.inventoryOutputs}}
+                                </th>
+                                <th>
+                                    $ {{item.total}}
                                 </th>
                                 <td>
                                     {{item.description}}
