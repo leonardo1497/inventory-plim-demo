@@ -11,10 +11,15 @@
     <div class="row">
         <div class="col">
             <div class="card shadow">
-                <div class="card-header border-0">
-                    <button class="btn btn-lg btn-outline-primary" (click)="open(mdl_add)">Agregar</button><br><br>
-                    <h3 class="mb-0">Lista de productos</h3>
-                </div>
+                <div class="row p-3"> <!-- card-header border-0 -->
+                    <div class="col-md-8"><h3 class="mb-0">Lista de productos</h3></div>
+                    <div class="col-md-4 text-right">
+                        <button class="btn btn-lg btn-primary" (click)="open(mdl_add)">
+                            Agregar nuevo registro
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                  </div>
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
@@ -50,9 +55,13 @@
                                 </td>
                                 <td class="text-right">
                                     <button class="btn btn-lg btn-primary"
-                                        (click)="editProduct(mdl_add, i)">Editar</button>
+                                        (click)="editProduct(mdl_add, i)">
+                                        Editar  <i class="fas fa-edit"></i>
+                                    </button>
                                     <button class="btn btn-lg btn-primary"
-                                        (click)="detailsInventory(product_details, i)">Inventario</button>
+                                        (click)="detailsInventory(product_details, i)">
+                                        Inventario  <i class="fas fa-plus"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -123,9 +132,9 @@
     </form>
     <div class="modal-footer">
         <button *ngIf="!update" type="submit" class="btn btn-primary" [disabled]="formProduct.invalid"
-            (click)="saveProductData()">Guardar</button>
+            (click)="saveProductData()">Guardar <i class="fas fa-save"></i></button>
         <button *ngIf="update" type="submit" class="btn btn-primary" [disabled]="formProduct.invalid"
-            (click)="updateProductData()">Actualizar</button>
+            (click)="updateProductData()">Actualizar <i class="fas fa-edit"></i></button>
     </div>
 </ng-template>
 
@@ -183,7 +192,7 @@
         </div>
     </form>
     <div class="modal-footer">
-        <button  class="btn btn-primary" (click)="close()">Cerrar</button>
+        <button  class="btn btn-primary" (click)="close()">Cerrar <i class="far fa-window-close"></i></button>
     </div>
 </ng-template>
 

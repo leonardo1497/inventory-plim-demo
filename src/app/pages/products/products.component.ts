@@ -29,13 +29,8 @@ export class ProductsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.inventoryService.customProducts$.subscribe(products =>{this.items = products;});
-    this.inventoryService.customInventoryProducts$.subscribe(inventoryProducts =>{this.inventoryProducts = inventoryProducts;})
-
-    //Aca actualizo el total de  productos y la cantidad de productos que salio del inventario
-    this.updateProductsBasedOnInventory();
+    this.initInventory();
     this.inventoryService.updateProducts(this.items);
-
     this.formProduct = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required]
@@ -70,6 +65,7 @@ export class ProductsComponent implements OnInit {
   saveProductData(){
     this.items.push(this.formProduct.value)
     this.inventoryService.updateProducts(this.items);
+    this.initInventory();
     this.showSuccess("Guardado exitoso");
     this.modalService.dismissAll()
   }
@@ -78,6 +74,7 @@ export class ProductsComponent implements OnInit {
     this.items.splice(this.positionItem,1 ,this.formProduct.value)
     this.inventoryService.updateProducts(this.items);
     this.showSuccess("Actualización exitosa");
+    this.initInventory();
     this.modalService.dismissAll()
   }
 
@@ -106,11 +103,15 @@ export class ProductsComponent implements OnInit {
     });
     return inventoryProduct;
   }
+  initInventory(){
+    this.inventoryService.customProducts$.subscribe(products =>{this.items = products;});
+    this.inventoryService.customInventoryProducts$.subscribe(inventoryProducts =>{this.inventoryProducts = inventoryProducts;})
+    this.updateProductsBasedOnInventory();
+    this.inventoryService.updateProducts(this.items);
+  }
   close(){
     this.activeModal.close();
   }
-
-  
   showSuccess(message) {
     console.log(message)
     this.toastService.show(message, { classname: 'alert-success text-white font-xl', delay: 5000, icon:'fas fa-check-circle' });
