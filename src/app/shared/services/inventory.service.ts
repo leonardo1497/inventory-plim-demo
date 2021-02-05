@@ -16,10 +16,9 @@ export class InventoryService {
   
   itemsProducts: any = [
     {name: "Mesa", description: "Una mesa ...", total:0,inventoryOutputs:0,},
-    {name: "Sillón", description: "Una mesa ...",total:0,inventoryOutputs:0},
-    {name: "Silla", description: "Una mesa ..." ,total:0,inventoryOutputs:0},
-    {name: "Ropero", description: "Una mesa ...",total:0,inventoryOutputs:0},
-    {name: "Mesa", description: "Una mesa ...",total:0,inventoryOutputs:0},
+    {name: "Sillón", description: "Un sillon ...",total:0,inventoryOutputs:0},
+    {name: "Silla", description: "Una silla ..." ,total:0,inventoryOutputs:0},
+    {name: "Ropero", description: "Un ropero ...",total:0,inventoryOutputs:0},
   ]
   private products = new BehaviorSubject<any>(this.itemsProducts);
 
