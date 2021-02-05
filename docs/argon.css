@@ -15071,7 +15071,8 @@ button.bg-lighter:focus
 
 .bg-gradient-danger
 {
-    background: linear-gradient(87deg, #f5365c 0, #f56036 100%) !important;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(66,13,121,1) 48%, rgba(0,212,255,1) 100%);
 }
 
 .bg-gradient-light
