@@ -36,7 +36,8 @@ export class TablesComponent implements OnInit {
       price: ['', Validators.required],
       total: ['', Validators.required],
       date: ['', Validators.required],
-      inventoryOutputs: [0]
+      inventoryOutputs: [0],
+      id: [""],
     })
     this.formOutput = this.formBuilder.group({
       output:[0,Validators.required]
@@ -78,6 +79,7 @@ export class TablesComponent implements OnInit {
     this.formInventory.get('price').setValue(inventoryProduct.price)
     this.formInventory.get('date').setValue(inventoryProduct.date)
     this.formInventory.get('inventoryOutputs').setValue(inventoryProduct.inventoryOutputs)
+    this.formInventory.get('id').setValue(inventoryProduct.id)
     this.activeModal = this.modalService.open(modal);
   }
 
@@ -97,6 +99,8 @@ export class TablesComponent implements OnInit {
   
 
   saveInventoryData(){
+    this.formInventory.get('inventoryOutputs').setValue(0)
+    this.formInventory.get('id').setValue("ID21"+(this.items.length+1))
     this.changeFormatDate()
     this.items.push(this.formInventory.value)
     this.inventoryService.updateInventoryProducts(this.items)

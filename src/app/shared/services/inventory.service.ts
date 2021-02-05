@@ -6,11 +6,11 @@ import { Observable, throwError, BehaviorSubject, Subject } from "rxjs";
 })
 export class InventoryService {
   itemsInventory: any = [
-    {product: "Mesa", quantity: 10, price: 320, total: 3200,inventoryOutputs:10,date: "01/05/2021" },
-    {product: "Sillón", quantity: 10, price: 320, total: 3200, inventoryOutputs:0,date: "03/12/2021" },
-    {product: "Silla", quantity: 10, price: 320, total: 3200,inventoryOutputs:0, date: "22/03/2020" },
-    {product: "Ropero", quantity: 10, price: 320, total: 3200,inventoryOutputs:0, date: "11/02/2021" },
-    {product: "Mesa", quantity: 10, price: 320, total: 3200,inventoryOutputs:5, date: "23/01/2020" },
+    {id:"ID211",product: "Mesa", quantity: 10, price: 320, total: 3200,inventoryOutputs:10,date: "01/05/2021" },
+    {id:"ID212",product: "Sillón", quantity: 10, price: 320, total: 3200, inventoryOutputs:0,date: "03/12/2021" },
+    {id:"ID213",product: "Silla", quantity: 10, price: 320, total: 3200,inventoryOutputs:0, date: "22/03/2020" },
+    {id:"ID214",product: "Ropero", quantity: 10, price: 320, total: 3200,inventoryOutputs:0, date: "11/02/2021" },
+    {id:"ID215",product: "Mesa", quantity: 10, price: 320, total: 3200,inventoryOutputs:5, date: "23/01/2020" },
   ];
   private inventoryProducts = new BehaviorSubject<any>(this.itemsInventory);
   

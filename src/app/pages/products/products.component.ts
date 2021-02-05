@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService } from 'src/app/shared/services/inventory.service';
+import { ToastService } from 'src/app/shared/toasts/toast-service';
 
 @Component({
   selector: 'app-products',
@@ -24,6 +25,7 @@ export class ProductsComponent implements OnInit {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private inventoryService: InventoryService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -68,12 +70,14 @@ export class ProductsComponent implements OnInit {
   saveProductData(){
     this.items.push(this.formProduct.value)
     this.inventoryService.updateProducts(this.items);
+    this.showSuccess("Guardado exitoso");
     this.modalService.dismissAll()
   }
 
   updateProductData(){
     this.items.splice(this.positionItem,1 ,this.formProduct.value)
     this.inventoryService.updateProducts(this.items);
+    this.showSuccess("Actualización exitosa");
     this.modalService.dismissAll()
   }
 
@@ -104,5 +108,11 @@ export class ProductsComponent implements OnInit {
   }
   close(){
     this.activeModal.close();
+  }
+
+  
+  showSuccess(message) {
+    console.log(message)
+    this.toastService.show(message, { classname: 'alert-success text-white font-xl', delay: 5000, icon:'fas fa-check-circle' });
   }
 }
